@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head th:replace="fragments/header :: head">
+    <title>Accueil</title>
+</head>
+<body th:replace="fragments/header :: layout('Accueil', ~{::section})">
+<section>
+    <div class="container py-5">
+        <div class="jumbotron p-5 rounded-3 shadow-sm">
+            <h1 class="display-4 fw-bold text-primary mb-4">
+                <i class="fas fa-blog me-2"></i>Bienvenue sur Blog App
+            </h1>
+            <p class="lead fs-4 text-dark mb-4">
+                Partagez vos pensées avec le monde entier. Une plateforme simple et intuitive pour exprimer vos idées.
+            </p>
+            <hr class="my-4">
+            <div class="d-grid gap-3 d-md-flex justify-content-md-start">
+                <a class="btn btn-primary btn-lg px-4 me-md-2" href="/posts" role="button">
+                    <i class="fas fa-newspaper me-2"></i>Voir les Posts
+                </a>
+                <a class="btn btn-outline-secondary btn-lg px-4" href="/register" role="button">
+                    <i class="fas fa-user-plus me-2"></i>S'inscrire
+                </a>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-pencil-alt fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title">Écrivez librement</h3>
+                        <p class="card-text">Exprimez vos idées sans limites et partagez-les avec la communauté.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-success mb-3"></i>
+                        <h3 class="card-title">Communauté</h3>
+                        <p class="card-text">Rejoignez une communauté de passionnés et découvrez de nouvelles perspectives.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-lock fa-3x text-info mb-3"></i>
+                        <h3 class="card-title">Sécurisé</h3>
+                        <p class="card-text">Vos données sont protégées et votre vie privée respectée.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

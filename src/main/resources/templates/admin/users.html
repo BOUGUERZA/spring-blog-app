@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head th:replace="fragments/header :: head">
+    <title>Gestion des utilisateurs</title>
+</head>
+<body th:replace="~{fragments/header :: layout(~{::title}, ~{::section})}">
+<section>
+    <div class="container py-4">
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Ajouter un utilisateur</h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/users}" method="post" th:object="${newUser}">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" placeholder="Nom d'utilisateur" th:field="*{username}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" placeholder="Mot de passe" th:field="*{password}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                <select class="form-select" th:field="*{role}">
+                                    <option value="ROLE_USER">Utilisateur</option>
+                                    <option value="ROLE_ADMIN">Administrateur</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-users me-2"></i>Liste des utilisateurs</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom d'utilisateur</th>
+                            <th>Rôle</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}"></td>
+                            <td>
+                                <form th:action="@{'/admin/users/' + ${user.id} + '/update'}" method="post">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" name="username"
+                                               th:value="${user.username}" required>
+                                    </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                    <select class="form-select" name="role">
+                                        <option th:selected="${user.role} == 'ROLE_USER'"
+                                                value="ROLE_USER">Utilisateur</option>
+                                        <option th:selected="${user.role} == 'ROLE_ADMIN'"
+                                                value="ROLE_ADMIN">Administrateur</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-circle">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                    </form>
+                                    <form th:action="@{'/admin/users/' + ${user.id} + '/delete'}" method="post">
+                                        <button type="submit" class="btn btn-danger btn-sm rounded-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
