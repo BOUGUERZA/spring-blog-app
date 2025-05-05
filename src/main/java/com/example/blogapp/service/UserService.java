@@ -43,7 +43,23 @@ public class UserService implements UserDetailsService {
     }
 
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Vérifier si le mot de passe est vide ou s'il s'agit d'une mise à jour d'utilisateur existant
+        if (user.getId() != null) {
+            // C'est une mise à jour d'un utilisateur existant
+            User existingUser = userRepository.findById(user.getId()).orElse(null);
+            if (existingUser != null && (user.getPassword() == null || user.getPassword().isEmpty())) {
+                // Conserver le mot de passe existant si aucun nouveau mot de passe n'est fourni
+                user.setPassword(existingUser.getPassword());
+            } else if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                // Encoder le nouveau mot de passe
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+        } else {
+            // C'est un nouvel utilisateur, encoder le mot de passe
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+        }
         return userRepository.save(user);
     }
 

@@ -1,9 +1,7 @@
 package com.example.blogapp.model;
 
 import jakarta.persistence.*;
-
-import jakarta.persistence.*;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,8 +21,11 @@ public class User {
     @Column(nullable = false)
     private String role; // "ROLE_USER" ou "ROLE_ADMIN"
 
+    @Column(nullable = false)
+    private boolean blocked = false;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     // Constructeurs, getters et setters
     public User() {}
@@ -67,6 +68,14 @@ public class User {
         this.role = role;
     }
 
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
     public List<Post> getPosts() {
         return posts;
     }
@@ -74,6 +83,4 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
-// Getters et setters pour tous les champs
-    // ...
 }

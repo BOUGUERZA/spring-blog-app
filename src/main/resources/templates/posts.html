@@ -7,13 +7,25 @@
 <body th:replace="~{fragments/header :: layout('Posts', ~{::section})}">
 <section>
     <div class="container py-4">
+        <!-- Message d'erreur -->
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
         <!-- Formulaire de création de post -->
         <div class="card shadow-lg mb-4">
             <div class="card-header bg-success text-white">
                 <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Créer un nouveau post</h4>
             </div>
             <div class="card-body">
-                <form th:action="@{/posts}" method="post" th:object="${newPost}">
+                <!-- Afficher un avertissement si l'utilisateur est bloqué -->
+                <div th:if="${currentUser != null && currentUser.blocked}" class="alert alert-warning mb-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Votre compte est bloqué. Vous ne pouvez pas publier de nouveaux posts.
+                </div>
+                
+                <form th:action="@{/posts}" method="post" th:object="${newPost}" th:classappend="${currentUser != null && currentUser.blocked ? 'd-none' : ''}">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <div class="mb-3">
                         <textarea class="form-control" th:field="*{content}" rows="3"

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head th:replace="fragments/header :: head">
+    <title>Erreur</title>
+</head>
+<body th:replace="~{fragments/header :: layout(~{::title}, ~{::section})}">
+<section>
+    <div class="container py-5">
+        <div class="card shadow-lg border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Erreur</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger" th:if="${error}">
+                    <p class="mb-0" th:text="${error}">Message d'erreur</p>
+                </div>
+                <div class="alert alert-danger" th:unless="${error}">
+                    <p class="mb-0">Une erreur inattendue s'est produite. Veuillez réessayer plus tard.</p>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="/" class="btn btn-primary me-2">
+                        <i class="fas fa-home me-2"></i>Accueil
+                    </a>
+                    <a href="/posts" class="btn btn-secondary">
+                        <i class="fas fa-newspaper me-2"></i>Posts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -53,16 +53,36 @@ public class PostController {
             return "posts";
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
+            model.addAttribute("error", "Une erreur s'est produite: " + e.getMessage());
+            return "error";
         }
     }
 
     @PostMapping
     public String createPost(@ModelAttribute("newPost") Post post,
-                             @AuthenticationPrincipal UserDetails userDetails) {
+                             @AuthenticationPrincipal UserDetails userDetails,
+                             Model model) {
         try {
             User currentUser = userService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            
+            // Vérifier si l'utilisateur est bloqué
+            if (currentUser.isBlocked()) {
+                // Rediriger vers la page des posts avec un message d'erreur
+                model.addAttribute("error", "Votre compte est bloqué. Vous ne pouvez pas ajouter de posts.");
+                
+                // Recharger les posts pour l'affichage
+                List<Post> posts = postService.findAll().stream()
+                        .map(p -> postService.findByIdWithComments(p.getId()).orElse(p))
+                        .collect(Collectors.toList());
+                
+                model.addAttribute("posts", posts);
+                model.addAttribute("newPost", new Post());
+                model.addAttribute("newComment", new Comment());
+                model.addAttribute("currentUser", currentUser);
+                
+                return "posts";
+            }
 
             post.setUser(currentUser);
             postService.save(post);
